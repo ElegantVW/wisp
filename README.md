@@ -2,16 +2,20 @@
 
 House lanterns and the HEOS remote. No Denon app, no vendor cloud.
 
-Rust. TUI: `wisp`. One-shots: `wisp status` · `wisp discover` · `wisp ap on|off|status`.
+Rust. TUI: `wisp`. One-shots: `wisp status` · `wisp discover` · `wisp ap on|off|status` · `wisp pads` · `wisp pads scan`.
 
 Speakers are driven through `siren heos` (stock CLI on the LAN). Wisp does not open that door itself.
 
 ## Faces
 
+Tab / Shift-Tab cycle faces using Grove's shared `cycle_next` /
+`cycle_previous` bindings.
+
 - **speakers** — roster, vol, mute, play/stop, group
 - **source** — `a` AUX · `b` Bluetooth · `n` network (Siren follow/radio)
 - **enlist** — house AP + WPS (Connect ~3s) or one RJ45 singleton
 - **ap** — house hotspot via `ether ap` (iw + hostapd; NetworkManager-free). Wisp only shells `ether ap on|off|status` and shows ether's status line.
+- **pads** — gamepads via `ether bt`. Battletron enumerates on USB as **Nacon GC-100** (`3285:0607`, xpad). Wisp never opens HCI or bluetoothctl. For wireless: unplug, scan, SHARE+PS.
 
 One ethernet jack is a singleton. A fleet groups on the house AP.
 

@@ -6,6 +6,8 @@ description = "Wisp — house lanterns and HEOS remote. No vendor cloud."
 license = "MIT"
 publish = false
 
+[workspace]
+
 [[bin]]
 name = "wisp"
 path = "src/main.rs"

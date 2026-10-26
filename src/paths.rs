@@ -11,7 +11,9 @@ pub fn home() -> PathBuf {
 pub fn siren_candidates() -> Vec<PathBuf> {
     let h = home();
     vec![
-        std::env::var_os("SIREN_BIN").map(PathBuf::from).unwrap_or_default(),
+        std::env::var_os("SIREN_BIN")
+            .map(PathBuf::from)
+            .unwrap_or_default(),
         h.join(".local/lib/faeos/siren"),
         PathBuf::from("/usr/local/lib/faeos/siren"),
         h.join("siren/target/release/siren"),

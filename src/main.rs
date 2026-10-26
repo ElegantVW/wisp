@@ -1,7 +1,9 @@
 //! wisp — house lanterns and HEOS remote. No vendor cloud.
 
 mod ap;
+mod grove_keys;
 mod heos;
+mod pads;
 mod paths;
 mod tui;
 
@@ -25,6 +27,17 @@ enum Cmd {
         #[command(subcommand)]
         sub: ApCmd,
     },
+    /// Gamepads via ether bt
+    Pads {
+        #[command(subcommand)]
+        sub: Option<PadsCmd>,
+    },
+}
+
+#[derive(Subcommand)]
+enum PadsCmd {
+    Status,
+    Scan,
 }
 
 #[derive(Subcommand)]
@@ -72,6 +85,22 @@ fn main() {
             ApCmd::Off => match ap::lower() {
                 Ok(m) => {
                     println!("{m}");
+                    0
+                }
+                Err(e) => {
+                    eprintln!("{e}");
+                    1
+                }
+            },
+        },
+        Some(Cmd::Pads { sub }) => match sub.unwrap_or(PadsCmd::Status) {
+            PadsCmd::Status => {
+                println!("{}", pads::status_line());
+                0
+            }
+            PadsCmd::Scan => match pads::scan() {
+                Ok(v) => {
+                    println!("{v}");
                     0
                 }
                 Err(e) => {

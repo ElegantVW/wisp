@@ -11,7 +11,9 @@ pub fn siren_bin() -> Option<std::path::PathBuf> {
 }
 
 pub fn cmd(args: &[&str]) -> Result<Value, String> {
-    let bin = siren_bin().ok_or_else(|| "siren engine missing — ./build.sh install --house in ~/siren".to_string())?;
+    let bin = siren_bin().ok_or_else(|| {
+        "siren engine missing — ./build.sh install --house in ~/siren".to_string()
+    })?;
     let mut c = Command::new(&bin);
     c.arg("heos");
     for a in args {
@@ -20,9 +22,7 @@ pub fn cmd(args: &[&str]) -> Result<Value, String> {
     if !args.iter().any(|a| *a == "--json") {
         c.arg("--json");
     }
-    let out = c
-        .output()
-        .map_err(|e| format!("siren heos: {e}"))?;
+    let out = c.output().map_err(|e| format!("siren heos: {e}"))?;
     let stdout = String::from_utf8_lossy(&out.stdout).trim().to_string();
     let stderr = String::from_utf8_lossy(&out.stderr).trim().to_string();
     if stdout.is_empty() {
@@ -64,7 +64,10 @@ mod tests {
             !prod.contains("TcpStream"),
             "wisp does not open the speaker door itself"
         );
-        assert!(prod.contains("audio\", \"match\""), "Wisp matches Siren after source");
+        assert!(
+            prod.contains("audio\", \"match\""),
+            "Wisp matches Siren after source"
+        );
         let tui = std::fs::read_to_string("src/tui.rs").expect("tui.rs");
         let main = std::fs::read_to_string("src/main.rs").expect("main.rs");
         assert!(

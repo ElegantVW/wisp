@@ -5,7 +5,7 @@
 
 use std::process::Command;
 
-fn ether_bin() -> String {
+pub(crate) fn ether_bin() -> String {
     if let Some(home) = std::env::var_os("HOME") {
         let h = std::path::Path::new(&home);
         for p in [
@@ -52,11 +52,21 @@ mod tests {
     fn ap_transport_is_ether_not_nmcli() {
         let src = std::fs::read_to_string("src/ap.rs").expect("ap.rs");
         let prod = src.split("mod tests").next().unwrap();
-        assert!(!prod.contains("nmcli"), "wisp must not shell nmcli for the AP");
-        for needle in ["ether_ap(\"on\")", "ether_ap(\"off\")", "ether_ap(\"status\")"] {
+        assert!(
+            !prod.contains("nmcli"),
+            "wisp must not shell nmcli for the AP"
+        );
+        for needle in [
+            "ether_ap(\"on\")",
+            "ether_ap(\"off\")",
+            "ether_ap(\"status\")",
+        ] {
             assert!(prod.contains(needle), "missing `{needle}`");
         }
-        assert!(prod.contains(r#"["ap", args]"#), "wisp must route through `ether ap …`");
+        assert!(
+            prod.contains(r#"["ap", args]"#),
+            "wisp must route through `ether ap …`"
+        );
     }
 
     #[test]
