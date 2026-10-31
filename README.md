@@ -1,4 +1,4 @@
-# Wisp
+# Wisp — the lanterns 🎐
 
 House lanterns and the HEOS remote. No Denon app, no vendor cloud.
 
